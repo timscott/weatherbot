@@ -27,8 +27,7 @@ controller.hears(['(.*) weather(\s*)(.*)?'], 'direct_message, direct_mention, me
   let matches = message.text.match(/(.*) weather(\s*)(.*)?/i);
   let locale = matches[1];
   let timeScope = matches[3];
-  weatherService.fiveDayForecast(locale, data => {
-    let forecast = new WeatherForecast(data);
+  weatherService.fiveDayForecast(locale, forecast => {
     bot.reply(message, `${forecast.toString(timeScope)}`);
   });
 });

@@ -37,6 +37,6 @@ module.exports = class WeatherForecast {
 
   toString(criteria) {
     let intervalsText = this.intervals(criteria).map(interval => interval.toString()).join('\n');
-    return `${this.cityName} weather:\n${intervalsText}\nNOTE: All times Eastern.`;
+    return `${this.cityName} weather:\n${intervalsText}`;
   }
 }

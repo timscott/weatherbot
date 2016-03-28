@@ -30,7 +30,7 @@ describe('WeatherInterval', () => {
   });
   describe('toString', () => {
     it('should return the formatted interval', () => {
-      expect(subject.toString()).to.equal('Fri 05:00 PM EDT - 75° F - :barely_sunny: scattered clouds');
+      expect(subject.toString()).to.equal('Fri 05:00 PM EDT | 75° F | :barely_sunny: scattered clouds');
     });
   });
   describe('matches', () => {

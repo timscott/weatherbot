@@ -15,6 +15,7 @@ module.exports.fiveDayForecast = (locale, callback) => {
   let url = weather_forecast_url + '?' + qs.stringify(query);
   request(url, (error, response, body) => {
     let data = JSON.parse(body);
-    callback(data);
+    let forecast = new WeatherForecast(data);
+    callback(forecast);
   });
 };
