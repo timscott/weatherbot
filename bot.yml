@@ -1,7 +1,8 @@
 name: Weatherbot
 description: A simple toy bot for Tim Scott to learn about developing bots.
 config:
-  - name: Weather API key
+  - name: WEATHER_API_KEY
+    friendly_name: Weather API key
     type: secret
     default:
     global: true
