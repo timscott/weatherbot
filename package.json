@@ -4,7 +4,7 @@
   "description": "A slack bot that tells you the weather.",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "author": "Tim Scott",
   "license": "ISC",
