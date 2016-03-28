@@ -2,11 +2,11 @@
 require('dotenv').config();
 
 if (!process.env.SLACK_TOKEN) {
-  console.log('Error: A Slackbot token is required.');
+  console.log(`Error: A Slackbot token is required.\nEnv:\n${JSON.stringify(process.env)}`);
   process.exit(1);
 }
 if (!process.env.WEATHER_API_KEY) {
-  console.log('Error: A weather API key is required.');
+  console.log(`Error: A weather API key is required.\nEnv:\n${JSON.stringify(process.env)}`);
   process.exit(1);
 }
 
