@@ -1,11 +1,11 @@
 'use strict';
 require('dotenv').config();
 
-if (!process.env.token) {
+if (!process.env.TOKEN) {
   console.log('Error: A Slackbot token is required.');
   process.exit(1);
 }
-if (!process.env.weather_api_key) {
+if (!process.env.WEATHER_API_KEY) {
   console.log('Error: A weather API key is required.');
   process.exit(1);
 }
@@ -16,11 +16,11 @@ let weatherService = require('./services/weather_service');
 let WeatherForecast = require('./models/weather_forecast');
 
 let controller = Botkit.slackbot({
-  debug: true,
+  debug: process.env.DEBUG == 1
 });
 
 let bot = controller.spawn({
-  token: process.env.token
+  token: process.env.TOKEN
 }).startRTM();
 
 controller.hears(['(.*) weather(\s*)(.*)?'], 'direct_message, direct_mention, mention', (bot, message) => {

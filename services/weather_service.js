@@ -6,7 +6,7 @@ let qs = require('qs');
 let weather_endpoint = 'http://api.openweathermap.org/data/2.5/'
 let weather_forecast_url = weather_endpoint + 'forecast'
 let base_weather_query = {
-  appid: process.env.weather_api_key,
+  appid: process.env.WEATHER_API_KEY,
   units: 'imperial'
 }
 
