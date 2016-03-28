@@ -10,7 +10,6 @@ module.exports = class WeatherForecast {
   }
 
   intervals(criteria) {
-    console.log(`CRITERIA: ${criteria}`)
     switch (criteria ? criteria.toLowerCase().trim() : null) {
       case 'now':
         return this._intervals.length > 0 ? [this._intervals[0]] : [];
@@ -21,6 +20,7 @@ module.exports = class WeatherForecast {
       case 'this weekend':
         return this._intervals.filter(interval => interval.inWeekend());
       case null:
+      case undefined:
       case '5 day':
         return this._intervals;
       default:
