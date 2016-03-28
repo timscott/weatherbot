@@ -1,7 +1,7 @@
 'use strict';
 require('dotenv').config();
 
-if (!process.env.TOKEN) {
+if (!process.env.SLACK_TOKEN) {
   console.log('Error: A Slackbot token is required.');
   process.exit(1);
 }
@@ -20,7 +20,7 @@ let controller = Botkit.slackbot({
 });
 
 let bot = controller.spawn({
-  token: process.env.TOKEN
+  token: process.env.SLACK_TOKEN
 }).startRTM();
 
 controller.hears(['(.*) weather(\s*)(.*)?'], 'direct_message, direct_mention, mention', (bot, message) => {
