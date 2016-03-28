@@ -15,10 +15,10 @@
     "moment-timezone": "^0.5.3",
     "node-rest-client": "^1.8.0",
     "qs": "^6.1.0"
+    "dotenv": "^2.0.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "chai-datetime": "^1.4.1",
-    "dotenv": "^2.0.0"
+    "chai-datetime": "^1.4.1"
   }
 }
