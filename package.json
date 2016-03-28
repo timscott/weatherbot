@@ -1,6 +1,6 @@
 {
   "name": "weatherbot",
-  "version": "0.1",
+  "version": "0.1.0",
   "description": "A slack bot that tells you the weather.",
   "main": "app.js",
   "scripts": {
