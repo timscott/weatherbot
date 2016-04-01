@@ -2,6 +2,7 @@
 
 let request = require('request');
 let qs = require('qs');
+let WeatherForecast = require('../models/weather_forecast');
 
 let weather_endpoint = 'http://api.openweathermap.org/data/2.5/'
 let weather_forecast_url = weather_endpoint + 'forecast'
