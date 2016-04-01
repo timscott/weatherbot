@@ -10,8 +10,7 @@ describe('WeatherInfo', () => {
   let subject = new WeatherInfo({
     "dt": 1458939600,
     "main": {
-      "temp_min": 50,
-      "temp_max": 100,
+      "temp": 75,
     },
     "weather": [{
       "description": "scattered clouds",
@@ -21,11 +20,6 @@ describe('WeatherInfo', () => {
   describe('date', () => {
     it('should be the interval date', () => {
       expect(subject.date).to.equalDate(new Date('3/25/2016 16:00:00 -0500'));
-    });
-  });
-  describe('avgTemp', () => {
-    it('should be the average temp', () => {
-      expect(subject.avgTemp).to.equal(75);
     });
   });
   describe('toString', () => {

@@ -35,7 +35,7 @@ module.exports = class WeatherInfo {
     }[this.data.weather[0].icon];
   }
 
-  get avgTemp() {
+  get temp() {
     return Math.round((this.data.main.temp_min+this.data.main.temp_max)/2);
   }
 
@@ -44,7 +44,7 @@ module.exports = class WeatherInfo {
   }
 
   get tempFormatted() {
-    return `${this.avgTemp}° F`;
+    return `${this.temp}° F`;
   }
 
   inToday() {
