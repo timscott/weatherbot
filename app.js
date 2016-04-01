@@ -51,6 +51,7 @@ controller.hears(['hello', 'hi'], 'direct_message, direct_mention, mention', (bo
     let examples = `
 Austin weather
 Austin weather now
+Austin temp
 Chicago weather today
 Chicago weather tomorrow
 New York weather Wednedsay
