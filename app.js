@@ -16,9 +16,8 @@ if (missingSettings.length > 0) {
 
 let Botkit = require('botkit');
 let os = require('os');
-let weatherService = require('./services/weather_service');
 let WeatherForecast = require('./models/weather_forecast');
-let WeatherHearer = require('./services/weather_hearer');
+let WeatherAssitant = require('./services/weather_assistant');
 
 let controller = Botkit.slackbot({
   debug: process.env.DEBUG == 1
@@ -39,17 +38,11 @@ if (process.env.BEEPBOOP_ID) {
   });
 }
 
-controller.hears(WeatherHearer.matchers, 'direct_message, direct_mention, mention', (bot, message) => {
-  let hearer = new WeatherHearer(message.text);
-  if (hearer.isNow) {
-    weatherService.weather(hearer.locale, forecast => {
-      bot.reply(message, `${forecast.toString()}`)
-    });
-  } else {
-    weatherService.forecast(hearer.locale, forecast => {
-      bot.reply(message, `${forecast.toString(hearer.timeScope)}`)
-    });
-  }
+controller.hears(WeatherAssitant.matchers, 'direct_message, direct_mention, mention', (bot, message) => {
+  let assistant = new WeatherAssitant(message.text);
+  assistant.reply(answer => {
+    bot.reply(message, answer);
+  });
 });
 
 controller.hears(['hello', 'hi'], 'direct_message, direct_mention, mention', (bot, message) => {

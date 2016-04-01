@@ -43,6 +43,10 @@ module.exports = class WeatherInfo {
     return this.data.weather[0].description;
   }
 
+  get tempFormatted() {
+    return `${this.avgTemp}° F`;
+  }
+
   inToday() {
     return moment(this.date).isSame(new Date(), 'day')
   }
@@ -62,7 +66,7 @@ module.exports = class WeatherInfo {
   toString() {
     return [
       moment(this.date).tz(this.timezoneId).format('ddd hh:mm A zz'),
-      `${this.avgTemp}° F`,
+      this.tempFormatted,
       `${this.emoji} ${this.description}`
     ].join(' | ');
   };
