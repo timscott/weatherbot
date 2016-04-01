@@ -1,34 +1,34 @@
 'use strict';
-let WeatherInterval = require('./weather_interval');
+let WeatherInfo = require('./weather_info');
 let moment = require('moment');
 
 module.exports = class WeatherForecast {
 
   constructor(data) {
     this.data = data;
-    this._intervals = data.list.map(interval => new WeatherInterval(interval));
+    this._infos = data.list.map(info_data => new WeatherInfo(info_data));
   }
 
-  intervals(criteria) {
+  infos(criteria) {
     switch (criteria ? criteria.toLowerCase().trim() : null) {
       case 'now':
-        return this._intervals.length > 0 ? [this._intervals[0]] : [];
+        return this._infos.length > 0 ? [this._infos[0]] : [];
       case 'today':
-        return this._intervals.filter(interval => interval.inToday());
+        return this._infos.filter(info => info.inToday());
       case 'tomorrow':
-        return this._intervals.filter(interval => interval.inTomorrow());
+        return this._infos.filter(info => info.inTomorrow());
       case 'this weekend':
-        return this._intervals.filter(interval => interval.inWeekend());
+        return this._infos.filter(info => info.inWeekend());
       case null:
       case undefined:
       case '5 day':
-        return this._intervals;
+        return this._infos;
       default:
         let weekdayIndex = moment.localeData().weekdaysParse(criteria);
-        return this._intervals.filter(interval => weekdayIndex ? interval.inDay(weekdayIndex) : false);
+        return this._infos.filter(info => weekdayIndex ? info.inDay(weekdayIndex) : false);
     }
 
-    return this._intervals.filter(filter);
+    return this._infos.filter(filter);
   }
 
   get cityName() {
@@ -36,7 +36,7 @@ module.exports = class WeatherForecast {
   }
 
   toString(criteria) {
-    let intervalsText = this.intervals(criteria).map(interval => interval.toString()).join('\n');
-    return `${this.cityName} weather:\n${intervalsText}`;
+    let infosText = this.infos(criteria).map(info => info.toString()).join('\n');
+    return `${this.cityName} weather:\n${infosText}`;
   }
 }

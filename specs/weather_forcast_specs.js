@@ -27,8 +27,8 @@ describe('WeatherForcast', () => {
     });
   });
   describe('toString', () => {
-    it('should return the city and formatted intervals', () => {
-      expect(subject.toString()).to.equal(`Austin weather:\n${subject.intervals().map(interval => interval.toString())}`);
+    it('should return the city and formatted infos', () => {
+      expect(subject.toString()).to.equal(`Austin weather:\n${subject.infos().map(interval => interval.toString())}`);
     });
   });
 });
