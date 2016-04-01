@@ -4,9 +4,9 @@ let moment = require('moment');
 
 module.exports = class WeatherForecast {
 
-  constructor(data) {
+  constructor(data, timezoneId) {
     this.data = data;
-    this._infos = data.list.map(info_data => new WeatherInfo(info_data));
+    this._infos = data.list.map(infoData => new WeatherInfo(infoData, timezoneId));
   }
 
   infos(criteria) {

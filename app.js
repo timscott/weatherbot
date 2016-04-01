@@ -14,6 +14,7 @@ let Botkit = require('botkit');
 let os = require('os');
 let weatherService = require('./services/weather_service');
 let WeatherForecast = require('./models/weather_forecast');
+let WeatherHearer = require('./services/weather_hearer');
 
 let controller = Botkit.slackbot({
   debug: process.env.DEBUG == 1
@@ -23,13 +24,17 @@ let bot = controller.spawn({
   token: process.env.SLACK_TOKEN
 }).startRTM();
 
-controller.hears(['(.*) weather(\s*)(.*)?'], 'direct_message, direct_mention, mention', (bot, message) => {
-  let matches = message.text.match(/(.*) weather(\s*)(.*)?/i);
-  let locale = matches[1];
-  let timeScope = matches[3];
-  weatherService.fiveDayForecast(locale, forecast => {
-    bot.reply(message, `${forecast.toString(timeScope)}`);
-  });
+controller.hears(WeatherHearer.matchers, 'direct_message, direct_mention, mention', (bot, message) => {
+  let hearer = new WeatherHearer(message.text);
+  if (hearer.isNow) {
+    weatherService.weather(hearer.locale, forecast => {
+      bot.reply(message, `${forecast.toString()}`)
+    });
+  } else {
+    weatherService.forecast(hearer.locale, forecast => {
+      bot.reply(message, `${forecast.toString(hearer.timeScope)}`)
+    });
+  }
 });
 
 controller.hears(['hello', 'hi'], 'direct_message, direct_mention, mention', (bot, message) => {

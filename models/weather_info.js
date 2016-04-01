@@ -5,8 +5,9 @@ require('moment-timezone');
 
 module.exports = class WeatherInfo {
 
-  constructor(data) {
+  constructor(data, timeZoneId) {
     this.data = data;
+    this.timezoneId = timeZoneId || 'America/New_York';
   }
 
   get date() {
@@ -60,7 +61,7 @@ module.exports = class WeatherInfo {
 
   toString() {
     return [
-      moment(this.date).tz('America/New_York').format('ddd hh:mm A zz'),
+      moment(this.date).tz(this.timezoneId).format('ddd hh:mm A zz'),
       `${this.avgTemp}° F`,
       `${this.emoji} ${this.description}`
     ].join(' | ');

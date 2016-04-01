@@ -6,3 +6,8 @@ config:
     type: secret
     default:
     global: true
+  - name: GEO_API_KEY
+    friendly_name: Geo API key
+    type: secret
+    default:
+    global: true
