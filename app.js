@@ -1,7 +1,11 @@
 'use strict';
 require('dotenv').config();
 
-let missingSettings = ['SLACK_TOKEN', 'WEATHER_API_KEY'].filter(setting => !process.env[setting]);
+let requiredSettings = ['WEATHER_API_KEY'];
+if (!process.env.BEEPBOOP_ID)
+  requiredSettings.push('SLACK_TOKEN');
+
+let missingSettings = requiredSettings.filter(setting => !process.env[setting]);
 if (missingSettings.length > 0) {
   console.log([
     'Error, required settings missing:',
@@ -20,9 +24,20 @@ let controller = Botkit.slackbot({
   debug: process.env.DEBUG == 1
 });
 
-let bot = controller.spawn({
-  token: process.env.SLACK_TOKEN
-}).startRTM();
+if (process.env.BEEPBOOP_ID) {
+  console.log('Starting in Beep Boop multi-team mode');
+  require('beepboop-botkit').start(controller, {
+    debug: true
+  });
+} else {
+  console.log('Starting in single-team mode');
+  controller.spawn({
+    token: process.env.SLACK_TOKEN
+  }).startRTM(function(err,bot,payload) {
+    if (err)
+      throw new Error(err);
+  });
+}
 
 controller.hears(WeatherHearer.matchers, 'direct_message, direct_mention, mention', (bot, message) => {
   let hearer = new WeatherHearer(message.text);

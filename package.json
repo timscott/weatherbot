@@ -9,6 +9,7 @@
   "author": "Tim Scott",
   "license": "ISC",
   "dependencies": {
+    "beepboop-botkit": "^1.1.1",
     "botkit": "0.0.12",
     "dateformat": "^1.0.12",
     "dotenv": "^2.0.0",
