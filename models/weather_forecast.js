@@ -30,7 +30,7 @@ module.exports = class WeatherForecast {
             return this._infos;
           default:
             let weekdayIndex = moment.localeData().weekdaysParse(criteria);
-            return this._infos.filter(info => weekdayIndex ? info.inDay(weekdayIndex) : false);
+            return this._infos.filter(info => info.inDay(weekdayIndex));
         }
     }
   }
