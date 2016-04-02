@@ -12,28 +12,33 @@ let base_query = {
   units: 'imperial'
 }
 
-let get_weather = (method, locale, callback) => {
+let get_weather = (method, locale, onSuccess, onError) => {
   let query = Object.assign(base_query, {q: locale})
   let url = `${endpoint}/${method}?${qs.stringify(query)}`;
   request(url, (error, response, body) => {
     let data = JSON.parse(body);
-    callback(data);
+    if (data.cod >= 400) {
+      console.log(`ERROR: ${url}\n${body}`);
+      onError(data.message);
+    } else {
+      onSuccess(data);
+    }
   });
 };
 
-module.exports.forecast = (locale, callback) => {
+module.exports.forecast = (locale, onSuccess, onError) => {
   get_weather('forecast', locale, data => {
     let date = data.list.length > 0 ? data.list[0].dt : new Date().getTime()
     geoService.timezone(date, data.city.coord.lat, data.city.coord.lon, tzData => {
-      callback(new WeatherForecast(data, tzData.timeZoneId))
+      onSuccess(new WeatherForecast(data, tzData.timeZoneId))
     });
-  });
+  }, onError);
 };
 
-module.exports.weather = (locale, callback) => {
+module.exports.weather = (locale, onSuccess, onError) => {
   get_weather('weather', locale, data => {
     geoService.timezone(data.dt, data.coord.lat, data.coord.lon, tzData => {
-      callback(new WeatherInfo(data, tzData.timeZoneId));
+      onSuccess(new WeatherInfo(data, tzData.timeZoneId));
     });
-  });
+  }, onError);
 };

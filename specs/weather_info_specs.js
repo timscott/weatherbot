@@ -8,13 +8,13 @@ chai.use(require('chai-datetime'));
 
 describe('WeatherInfo', () => {
   let subject = new WeatherInfo({
-    "dt": 1458939600,
-    "main": {
-      "temp": 75,
+    dt: 1458939600,
+    main: {
+      temp: 75,
     },
-    "weather": [{
-      "description": "scattered clouds",
-      "icon": "03d"
+    weather: [{
+      description: 'scattered clouds',
+      icon: '03d'
     }]
   });
   describe('date', () => {

@@ -35,8 +35,12 @@ module.exports = class WeatherInfo {
     }[this.data.weather[0].icon];
   }
 
+  get city() {
+    return this.data.name;
+  }
+
   get temp() {
-    return Math.round((this.data.main.temp_min+this.data.main.temp_max)/2);
+    return this.data.main.temp;
   }
 
   get description() {

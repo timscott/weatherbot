@@ -17,7 +17,7 @@ if (missingSettings.length > 0) {
 let Botkit = require('botkit');
 let os = require('os');
 let WeatherForecast = require('./models/weather_forecast');
-let WeatherAssitant = require('./services/weather_assistant');
+let WeatherAssistant = require('./services/weather_assistant');
 
 let controller = Botkit.slackbot({
   debug: process.env.DEBUG == 1
@@ -38,24 +38,33 @@ if (process.env.BEEPBOOP_ID) {
   });
 }
 
-controller.hears(WeatherAssitant.matchers, 'direct_message, direct_mention, mention', (bot, message) => {
-  let assistant = new WeatherAssitant(message.text);
-  assistant.reply(answer => {
-    bot.reply(message, answer);
+controller.hears(WeatherAssistant.matchers, 'direct_message, direct_mention, mention', (bot, message) => {
+  controller.storage.users.get(message.user, (err, user) => {
+    let assistant = new WeatherAssistant(message.text, user);
+    assistant.reply(answer => {
+      bot.reply(message, answer);
+    });
   });
 });
 
-controller.hears(['hello', 'hi'], 'direct_message, direct_mention, mention', (bot, message) => {
+controller.hears(['home is (.*)', 'my home (.*)', 'i live in (.*)', '(.*) is home'],'direct_message,direct_mention,mention', (bot, message) => {
+  var locale = message.match[1];
+  controller.storage.users.get(message.user, (err, user) => {
+    if (!user)
+      user = { id: message.user };
+    user.locale = locale;
+    controller.storage.users.save(user, (err, id) => {
+      bot.reply(message,`Got it. When don't specifiy a locale, I'll assume you mean ${locale}.`);
+    });
+  });
+});
+
+controller.hears(['hello', 'hi', 'howdy', 'yo'], 'direct_message, direct_mention, mention', (bot, message) => {
   controller.storage.users.get(message.user, function(err, user) {
-    let greeting = user && user.name ? 'Hello ' + user.name + '!' : 'Hello.';
-    let examples = `
-Austin weather
-Austin weather now
-Austin temp
-Chicago weather today
-Chicago weather tomorrow
-New York weather Wednedsay
-Athens GA weather this weekend`
-    bot.reply(message, `${greeting} You can ask me things like:${examples}`);
+    let answer = `Hi, I'm your Weatherbot! You can ask me things like:\n\n${WeatherAssistant.example_questions.join('\n')}\n\n`
+    if (user && user.locale)
+      answer += `I see you live in ${user.locale}. `
+    answer += `You can ${user && user.locale ? 'tell me' : 'change'} where you live:\n\nHome is Seattle`
+    bot.reply(message, answer);
   });
 });

@@ -9,34 +9,40 @@ module.exports = class WeatherForecast {
     this._infos = data.list.map(infoData => new WeatherInfo(infoData, timezoneId));
   }
 
-  infos(criteria) {
-    switch (criteria ? criteria.toLowerCase().trim() : null) {
-      case 'now':
-        return this._infos.length > 0 ? [this._infos[0]] : [];
-      case 'today':
-        return this._infos.filter(info => info.inToday());
-      case 'tomorrow':
-        return this._infos.filter(info => info.inTomorrow());
-      case 'this weekend':
-        return this._infos.filter(info => info.inWeekend());
-      case null:
-      case undefined:
-      case '5 day':
-        return this._infos;
+  infos(object, criteria) {
+    switch (object) {
+      case 'next':
+        let matches = this._infos.filter(info => info.description.indexOf(criteria) >= 0);
+        return matches.length > 0 ? [matches[0]] : []
       default:
-        let weekdayIndex = moment.localeData().weekdaysParse(criteria);
-        return this._infos.filter(info => weekdayIndex ? info.inDay(weekdayIndex) : false);
+        switch (criteria ? criteria.toLowerCase().trim() : null) {
+          case 'now':
+            return this._infos.length > 0 ? [this._infos[0]] : [];
+          case 'today':
+            return this._infos.filter(info => info.inToday());
+          case 'tomorrow':
+            return this._infos.filter(info => info.inTomorrow());
+          case 'this weekend':
+            return this._infos.filter(info => info.inWeekend());
+          case null:
+          case undefined:
+          case '5 day':
+            return this._infos;
+          default:
+            let weekdayIndex = moment.localeData().weekdaysParse(criteria);
+            return this._infos.filter(info => weekdayIndex ? info.inDay(weekdayIndex) : false);
+        }
     }
-
-    return this._infos.filter(filter);
   }
 
-  get cityName() {
+  get city() {
     return this.data.city.name;
   }
 
-  toString(criteria) {
-    let infosText = this.infos(criteria).map(info => info.toString()).join('\n');
-    return `${this.cityName} weather:\n${infosText}`;
+  toString(object, criteria) {
+    console.log(`INFOS: ${JSON.stringify(this.infos(object, criteria))}`);
+    let infosText = this.infos(object, criteria).map(info => info.toString()).join('\n');
+    console.log(`INFOS TEXT: ${infosText}`);
+    return `${this.city} weather:\n${infosText || 'No matching weather'}`;
   }
 }
