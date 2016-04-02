@@ -54,18 +54,26 @@ controller.hears(['home is (.*)', 'my home (.*)', 'i live in (.*)', '(.*) is hom
       user = { id: message.user };
     user.locale = locale;
     controller.storage.users.save(user, (err, id) => {
-      bot.reply(message,`Got it. If don't specifiy a locale, I'll assume you mean ${locale}.`);
+      bot.reply(message,`Got it. If you omit the locale, I'll assume you mean ${locale}.`);
     });
   });
 });
 
 controller.hears(['hello', 'hi', 'howdy', 'yo'], 'direct_message, direct_mention, mention', (bot, message) => {
   controller.storage.users.get(message.user, function(err, user) {
-    let questions = WeatherAssistant.example_questions.map(question => `"${question}"`).join('\n');
-    let answer = `Hi, I'm your Weatherbot! You can ask me things like:\n\n${questions}\n\n`
-    if (user && user.locale)
-      answer += `I see you live in ${user.locale}. `
-    answer += `To make things easier, you can ${user && user.locale ? 'change' : 'tell me'} where you live:\n\n"Home is Seattle"\n\nBy the way, I don't care about capitalization.`
+    let locale = user ? user.locale : null
+    let answer =
+`Hi, I'm your Weatherbot! You can ask me things like:
+
+${WeatherAssistant.example_questions.map(question => `"${question}"`).join('\n')}
+
+${locale ? `I see you live in ${locale}. ` : ''}${locale ? 'You can change that like' : 'To make things easier, tell me where you live'}:
+
+"Home is ${locale && locale.toLowerCase() == 'seattle' ? 'Austin' : 'Seattle'}"
+
+Pro Tips:
+- I don't care about capitalization
+- You can abbreviate day names (e.g., Wed, Sun)`
     bot.reply(message, answer);
   });
 });
