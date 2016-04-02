@@ -7,7 +7,8 @@ let WeatherForcast = require('./../models/weather_forecast');
 describe('WeatherForcast', () => {
   let subject = new WeatherForcast({
     city: {
-      name: 'Austin'
+      name: 'Austin',
+      country: 'US'
     },
     list: [{
       dt: 1458939600,

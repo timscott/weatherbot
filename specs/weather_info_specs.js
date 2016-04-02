@@ -12,6 +12,10 @@ describe('WeatherInfo', () => {
     main: {
       temp: 75,
     },
+    name: 'Austin',
+    sys: {
+      country: 'US'
+    },
     weather: [{
       description: 'scattered clouds',
       icon: '03d'
@@ -20,6 +24,11 @@ describe('WeatherInfo', () => {
   describe('date', () => {
     it('should be the interval date', () => {
       expect(subject.date).to.equalDate(new Date('3/25/2016 16:00:00 -0500'));
+    });
+  });
+  describe('city', () => {
+    it('should be the city name', () => {
+      expect(subject.city).to.equal('Austin');
     });
   });
   describe('toString', () => {

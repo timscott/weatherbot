@@ -40,9 +40,7 @@ module.exports = class WeatherForecast {
   }
 
   toString(object, criteria) {
-    console.log(`INFOS: ${JSON.stringify(this.infos(object, criteria))}`);
     let infosText = this.infos(object, criteria).map(info => info.toString()).join('\n');
-    console.log(`INFOS TEXT: ${infosText}`);
     return `${this.city} weather:\n${infosText || 'No matching weather'}`;
   }
 }

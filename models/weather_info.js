@@ -14,6 +14,10 @@ module.exports = class WeatherInfo {
     return new Date(this.data.dt * 1000);
   }
 
+  get dateInZone() {
+    return moment(this.date).tz(this.timezoneId);
+  }
+
   get emoji() {
     return {
       '01d': ':sunny:',
@@ -52,11 +56,11 @@ module.exports = class WeatherInfo {
   }
 
   inToday() {
-    return moment(this.date).isSame(new Date(), 'day')
+    return this.dateInZone.isSame(new Date(), 'day')
   }
 
   inTomorrow() {
-    return moment(this.date).isSame(moment().add('days', 1), 'day');
+    return this.dateInZone.isSame(moment().add('days', 1), 'day');
   }
 
   inWeekend() {
@@ -64,12 +68,12 @@ module.exports = class WeatherInfo {
   }
 
   inDay(dayIndex) {
-    return moment(this.date).day() == dayIndex
+    return this.dateInZone.day() == dayIndex
   }
 
   toString() {
     return [
-      moment(this.date).tz(this.timezoneId).format('ddd hh:mm A zz'),
+      this.dateInZone.format('ddd hh:mm A zz'),
       this.tempFormatted,
       `${this.emoji} ${this.description}`
     ].join(' | ');
