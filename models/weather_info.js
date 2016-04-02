@@ -36,7 +36,7 @@ module.exports = class WeatherInfo {
   }
 
   get city() {
-    return this.data.name;
+    return `${this.data.name}${this.data.sys.country != 'US' ? ` (${this.data.sys.country})` : ''}`;
   }
 
   get temp() {

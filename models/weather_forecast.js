@@ -36,7 +36,7 @@ module.exports = class WeatherForecast {
   }
 
   get city() {
-    return this.data.city.name;
+    return `${this.data.city.name}${this.data.city.country != 'US' ? ` (${this.data.city.country})` : ''}`;
   }
 
   toString(object, criteria) {
