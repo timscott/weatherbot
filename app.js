@@ -64,7 +64,7 @@ controller.hears(['hello', 'hi', 'howdy', 'yo'], 'direct_message, direct_mention
     let answer = `Hi, I'm your Weatherbot! You can ask me things like:\n\n${WeatherAssistant.example_questions.join('\n')}\n\n`
     if (user && user.locale)
       answer += `I see you live in ${user.locale}. `
-    answer += `You can ${user && user.locale ? 'tell me' : 'change'} where you live:\n\nHome is Seattle`
+    answer += `You can ${user && user.locale ? 'change' : 'tell me'} where you live:\n\nHome is Seattle`
     bot.reply(message, answer);
   });
 });
