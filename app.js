@@ -54,17 +54,18 @@ controller.hears(['home is (.*)', 'my home (.*)', 'i live in (.*)', '(.*) is hom
       user = { id: message.user };
     user.locale = locale;
     controller.storage.users.save(user, (err, id) => {
-      bot.reply(message,`Got it. When don't specifiy a locale, I'll assume you mean ${locale}.`);
+      bot.reply(message,`Got it. If don't specifiy a locale, I'll assume you mean ${locale}.`);
     });
   });
 });
 
 controller.hears(['hello', 'hi', 'howdy', 'yo'], 'direct_message, direct_mention, mention', (bot, message) => {
   controller.storage.users.get(message.user, function(err, user) {
-    let answer = `Hi, I'm your Weatherbot! You can ask me things like:\n\n${WeatherAssistant.example_questions.join('\n')}\n\n`
+    let questions = WeatherAssistant.example_questions.map(question => `"${question}"`).join('\n');
+    let answer = `Hi, I'm your Weatherbot! You can ask me things like:\n\n${questions}\n\n`
     if (user && user.locale)
       answer += `I see you live in ${user.locale}. `
-    answer += `You can ${user && user.locale ? 'change' : 'tell me'} where you live:\n\nHome is Seattle`
+    answer += `To make things easier, you can ${user && user.locale ? 'change' : 'tell me'} where you live:\n\n"Home is Seattle"\n\nBy the way, I don't care about capitalization.`
     bot.reply(message, answer);
   });
 });
